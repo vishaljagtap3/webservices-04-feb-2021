@@ -3,6 +3,8 @@ package in.bitcode.webservices1;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,49 @@ import java.net.URL;
 import java.util.ArrayList;
 
 class Util {
+    
+    public static void getPlaces1() {
+
+        try {
+            String strUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAkFMmA6Qr2tGmZhTYtFxsUq0XeXcVJemE";
+            HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(strUrl).openConnection();
+
+            httpURLConnection.connect();
+            if(httpURLConnection.getResponseCode() != 200) {
+                return;
+            }
+
+            InputStream in = httpURLConnection.getInputStream();
+
+            byte [] data = new byte[1024 * 4];
+            int count;
+            StringBuilder response = new StringBuilder();
+
+            while( (count = in.read(data)) != -1) {
+                response.append( new String(data, 0, count) );
+            }
+
+            mt(response.toString());
+
+            in.close();
+            httpURLConnection.disconnect();
+
+            Gson gson = new Gson();
+            FinalResult finalResult = gson.fromJson(response.toString(), FinalResult.class);
+
+            for(MyPlace myPlace : finalResult.results) {
+                mt(myPlace.toString());
+            }
+
+            mt(finalResult.status);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public static ArrayList<Place> getPlaces() {
 

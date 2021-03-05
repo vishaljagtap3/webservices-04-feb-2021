@@ -20,17 +20,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected ArrayList<Place> doInBackground(Object... objects) {
                 //Util.reqResDemo();
-                return Util.getPlaces();
+                //return Util.getPlaces();
                 //Util.downloadImage( getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-                //return null;
+                Util.getPlaces1();
+                return null;
             }
 
             @Override
             protected void onPostExecute(ArrayList<Place> places) {
                 super.onPostExecute(places);
-                for(Place place : places) {
+                /*for(Place place : places) {
                     Log.e("tag", place.toString());
-                }
+                }*/
             }
         }
         .execute((Object[])null);
